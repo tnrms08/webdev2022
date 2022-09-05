@@ -4,7 +4,7 @@
 ## 1. 분산화 시스템
 ### 중앙화 시스템
 
-![중앙화 시스템](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d86c0ec8-2913-4f66-bb29-e4ed3bed41ba/Untitled.png)
+![중앙화 시스템](./img/%EC%A4%91%EC%95%99%ED%99%94.png)
 
 - 모든 정보가 한 곳에 집중되며 그곳에만 의사결정권한 존재
     
@@ -16,7 +16,7 @@
 
 ### 탈중앙화 시스템(분산화 시스템)
 
-![탈중앙화 시스템](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/82387e95-bf26-49e4-9c29-6a602d5fe340/Untitled.png)
+![탈중앙화 시스템](./img/%ED%83%88%EC%A4%91%EC%95%99%ED%99%94.png)
 
 - 의사결정권한이 중앙기관에 집중되는 대신, 모든 노드가 피어(peer)로 연결되며 P2P 방식으로 데이터를 공유하는 신뢰 기반 시스템
     
