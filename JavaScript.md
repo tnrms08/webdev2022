@@ -66,3 +66,36 @@ switch (변수) {
     코드;
 }
 ```
+
+### 함수1
+
+```jsx
+function 함수명 (파라미터){
+	코드;
+}
+
+//예제
+function hello(name) {
+	//(')말고 (`) 사용
+  console.log(**`**Hello, ${name}!**`**);
+	//console.log('Hello, '+ name + '!'); 가능
+}
+hello('velopert');
+```
+
+### 함수2 (화살표 함수)
+```jsx
+const 함수명 = 파라미터 => {
+	코드;
+};
+
+//예제
+const add = (a, b) => {
+  return a + b;
+};
+
+console.log(add(1, 2));
+
+//위의 함수와 동일한 코드
+const add = (a, b) => a + b;
+```
