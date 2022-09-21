@@ -136,3 +136,110 @@ $$
 
 > 두 개의 함수 f(n)과 g(n)이 주어졌을 때, 모든 n≥K에 대하여 f(n)≤Cg(n)을 만족하는 두 개의 상수 C와 K가 존재한다면, f(n)의 빅-오는 O(g(n))이다.
 >
+
+# 02-1. 함수의 재귀적 호출의 이해
+
+### 재귀함수
+
+- 함수 내에 자신을 다시 호출하는 함수
+
+<aside>
+❓ 완료되지 않은 함수를 다시 호출하는 것이 가능한가?
+→ 함수가 호출되면 해당 함수의 복사본을 만들어 실행하는 구조이기 때문에 가능하다.
+
+    (함수를 구성하는 명령문이 CPU로 복사되어 실행되며 얼마든지 복사 가능)
+
+</aside>
+
+- ‘재귀의 탈출조건’이 성립되어야 함수가 반환하기 시작한다.
+- 재귀함수는 자료구조나 알고리즘의 어려운 문제를 단순화하는데 사용되는 중요한 무기이다.
+
+### 팩토리얼
+
+$$
+f(n)={n*f(n-1),\quad n≥1\brace1,\quad\quad\quad\quad\quad\quad n=0}
+$$
+
+```c
+//팩토리얼 함수
+int Factorial(int n)
+{
+	if(n==0)   //탈출조건
+		return 1;
+	else
+		return n*Factorial(n-1);	
+}
+```
+
+
+# 02-2. 재귀의 활용
+
+### 피보나치 수열(Fibonacci Sequence)
+
+- 재귀적인 형태를 띄는 대표적인 수열
+- 앞엣것 두 개를 더해서 현재의 수를 만들어가는 수열
+
+<aside>
+💡 수열의 n번째 값 = 수열의 n-1번째 값 + 수열의 n-2번째 값
+⇒ 0, 1, 1, 2, 3, 5, 9, 13, 21, 34, 55 . . .
+
+</aside>
+
+$$
+fib(n)\begin{cases} 0,\quad n=1 \\ 1, \quad n=2 \\ fib(n-1) + fib(n-2), \quad otherwise \end{cases}
+$$
+
+```c
+//피보나치 함수
+int Fibo(int n)
+{
+	if(n==1)
+		return 0;
+	else if(n==2)
+		return 1;
+	else
+		return Fibo(n-1) * Fibo(n-2);
+}
+```
+
+⇒ 수학적 재귀의 표현이 그대로 코드로 옮겨졌다.
+
+- 중복된 재귀 호출을 반복한다.
+
+⇒ 재귀함수는 매우 많은 수의 함수 호출을 동반하므로 성능상의 불리함이 존재한다.
+
+### 이진 탐색 알고리즘
+
+- 알고리즘 자체는 재귀적인 성격을 지니고 있다.
+    
+    > <반복패턴>
+    1. 탐색 범위의 중앙에 목표 값이 저장되었는지 확인
+    2. 저장되지 않았다면 탐색 범위를 반으로 줄여서 다시 탐색 시작
+    > 
+
+<aside>
+💡 * 재귀함수의 탈출조건
+⇒ 탐색 대상을 찾았거나 탐색 대상이 배열에 존재하지 않는 경우
+* 실패조건
+
+⇒ 탐색 범위의 시작 위치(first)가 탐색 범위의 끝의 위치(last)보다 커지는 경우
+
+</aside>
+
+```c
+//이진 탐색 함수
+int BsearchRecur(int ar[], int first, int last, int target)
+{
+	int mid;
+	if(first > last)    //탈출조건
+		return -1;
+	mid = (first+last)/2;
+
+	if(ar[mid]==target)
+		return mid;
+	else if(target<ar[mid])
+		return BsearchRecur(ar, first, mid-1, target);
+	else
+		return BsearchRecur(ar, mid+1, last, target);
+}
+```
