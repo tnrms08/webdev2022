@@ -218,8 +218,8 @@ int Fibo(int n)
     > 
 
 <aside>
-💡 * 재귀함수의 탈출조건
-⇒ 탐색 대상을 찾았거나 탐색 대상이 배열에 존재하지 않는 경우
+* 재귀함수의 탈출조건<br>
+⇒ 탐색 대상을 찾았거나 탐색 대상이 배열에 존재하지 않는 경우<br>
 * 실패조건
 
 ⇒ 탐색 범위의 시작 위치(first)가 탐색 범위의 끝의 위치(last)보다 커지는 경우
@@ -241,5 +241,64 @@ int BsearchRecur(int ar[], int first, int last, int target)
 		return BsearchRecur(ar, first, mid-1, target);
 	else
 		return BsearchRecur(ar, mid+1, last, target);
+}
+```
+
+-------
+# 02-3. 하노이 타워(The Tower of Hanoi)
+- 하나의 막대에 쌓여 있는 원반을 다른 하나의 원반에 그대로 옮기는 방법
+    
+    > <제약조건>
+    >- 원반은 한 번에 하나씩만 옮길 수 있다.
+    >- 옮기는 과정에서 작은 원반의 위에 큰 원반이 올려져서는 안된다.<br>
+    ⇒ 막대 A에서 막대 C로 옮기기 위해서 막대 B의 도움이 필요하다.
+- 재귀적으로 접근하지 않으면 해결이 쉽지 않은 문제이다.
+
+<img src = "./img/Hanoi.png" width = 300>
+
+<aside>
+    #해결 과정<br>
+    1. 작은 원반 n-1개를(맨 아래의 원반을 제외한 나머지 원반을) A에서 B로 이동<br>
+    2. 큰 원반(맨 아래의 원반) 1개를 A에서 C로 이동<br>
+    3. 작은 원반(위의 1단계에서 옮겨진 원반) n-1개를 B에서 C로 이동
+</aside>
+
+- 재귀의 탈출 조건 : 이동해야 할 원반의 수가 1개인 경우
+```c
+//하노이 타워 함수
+void HanoiTowerMove(int num, char from, char by, char to)
+{
+	if(num==1)
+		printf("원반1을 %c에서 %c로 이동\n", from, to);
+	else
+	{
+		HanoiTowerMove(num-1,from,to,by);
+		printf("원반%d을(를) %c에서 %c로 이동\n", num, from, to);
+		HanoiTowerMove(num-1,by,from,to);
+	}
+}
+```
+### 하노이 타워 구현
+```c
+#include <stdio.h>
+
+void hanoiMove(int num, char from, char by, char to)
+{
+	if (num == 1) {
+		printf("원반1 : %c에서 %c로 이동\n",from,to);
+	}
+	else {
+		hanoiMove(num - 1, from, to, by);
+		printf("원반%d : %c에서 %c로 이동\n", num, from, to);
+		hanoiMove(num - 1, by, from, to);
+	}
+}
+
+int main(void)
+{	
+	int num;
+	printf("원반의 수를 입력하세요. A에서 C로 이동합니다.\n");
+	scanf_s("%d", &num);
+	hanoiMove(num, 'A', 'B','C');
 }
 ```
