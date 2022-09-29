@@ -99,3 +99,89 @@ console.log(add(1, 2));
 //위의 함수와 동일한 코드
 const add = (a, b) => a + b;
 ```
+
+### 객체
+
+```jsx
+const 객체명 {
+	키: 원하는 값
+};
+
+//Ex
+const dog = {
+	name: "멍멍이",
+	age: 2,
+	sound: '멍멍!',
+	//객체 안에 함수 넣기
+	//*화살표 함수(say()=>{})를 선언하면 제대로 작동하지 않는다.*
+	say: function say() {
+    console.log(this.sound);
+  }
+};
+```
+
+- 키에 해당하는 값에는 공백이 있으면 안된다.
+⇒ 공백이 있는 경우 따옴표로 감싼다. Ex) ‘key with space’: true
+
+### Getter함수
+
+특정 값을 조회 할 때 우리가 설정한 함수로 연산된 값을 반환한다.
+
+```jsx
+const numbers = {
+  a: 1,
+  b: 2,
+
+  get sum() {
+    console.log('sum 함수가 실행됩니다!');
+    return this.a + this.b;
+  }
+};
+
+//numbers.sum 이 조회 될 때마다 덧셈이 이루어짐
+console.log(numbers.sum);    //3(1+2)
+numbers.b = 5;
+console.log(numbers.sum);    //6(1+5)
+```
+
+### Setter 함수
+
+특정 값을 바꾸려고 할 때 우리가 설정한 함수로 연산된 값을 반환한다.
+
+```jsx
+const numbers = {
+  _a: 1,
+  _b: 2,
+  sum: 3,
+  calculate() {
+    console.log('calculate');
+    this.sum = this._a + this._b;
+  },
+
+  get a() {
+    return this._a;
+  },
+  get b() {
+    return this._b;
+  },
+	//a 혹은 b 값이 바뀔 때마다 sum 값을 연산함
+  set a(value) {
+    console.log('a가 바뀝니다.');
+    this._a = value;
+    this.calculate();
+  },
+  set b(value) {
+    console.log('b가 바뀝니다.');
+    this._b = value;
+    this.calculate();
+  }
+};
+
+console.log(numbers.sum);    //a=1, b=2, sum=3
+numbers.a = 5;    //a가 바뀝니다. -> calculate
+numbers.b = 7;    //b가 바뀝니다. -> calculate
+numbers.a = 9;    //a가 바뀝니다. -> calculate
+console.log(numbers.sum);    //16(9+7)
+console.log(numbers.sum);    //16(9+7)
+console.log(numbers.sum);    //16(9+7)
+```
