@@ -303,5 +303,134 @@ int main(void)
 }
 ```
 
+# 03-1. 추상 자료형 : Abstract Data Type
 
-test
+### 추상 자료형(ADT)
+
+<aside>
+📖 구체적인 기능의 완성과정을 언급하지 않고, 순수하게 기능이 무엇인지를 나열한 것
+
+</aside>
+
+### 자료형(Wallet)
+
+- 구조체 → Wallet 자료형 정의
+- Wallet을 기반으로 하는 연산의 종류 결정하는 것도 정의의 일부
+	- 연산 : 함수를 이용해 정의
+
+  ⇒ 연산의 종류가 결정되었을 때 자료형의 정의가 완성된다.
+
+### 추상 자료형(Wallet)
+
+```c
+int main(void)
+{
+	Wallet myWallet;  // 지갑 생성
+	. . . .
+	PutMoney(&myWallet, 5, 10);  //지갑에 동전(5), 지폐(10) 넣기
+	. . . .
+	ret = TakeOutMoney(&myWallet, 2, 5);  //지갑에서 동전(2), 지폐(5) 꺼내기(꺼낸 돈의 총액 리턴)
+	. . . .
+}
+```
+
+- Wallet을 기반으로 돈을 넣고 꺼내는데 있어서, 구조체 Wallet의 멤버가 어떻게 구성되어 있는지 알 필요가 없다.<br>
+    ⇒ 구조체 Wallet의 정의를 ADT에 포함하는 것은 바람직하지 못하다.
+    
+
+---
+
+# 03-2. 배열을 이용한 리스트의 구현
+
+## 리스트(List)
+
+| 순차 리스트 |연결 리스트  |
+|:---:|:---:|
+| 배열을 기반으로 구현된 리스트 | 메모리의 동적 할당을 기반으로 구현된 리스트 |
+
+<aside>
+💡 각종 자료구조들의 ADT는 표준이 아니다.
+필요에 따라 ADT에 차이가 발생한다.
+
+</aside>
+
+### 소스파일
+```c
+#include <stdio.h>
+#include "ArrayList.h"
+
+void ListInit(List * plist)
+{
+	(plist->numOfData) = 0;
+	(plist->curPosition) = -1;
+}
+
+void LInsert(List * plist, LData data)
+{
+	if(plist->numOfData >= LIST_LEN)
+	{
+		puts("저장이 불가능합니다.");
+		return;
+	}
+	plist->arr[plist->numOfData] = data;
+	(plist->numOfData)++;
+}
+
+int LFirst(List * plist, LData * pdata)
+{
+	if(plist->numOfData == 0)
+		return FALSE;
+
+	(plist->curPosision) = 0;
+	*pdata = plist->arr[0];
+	return TRUE;
+}
+
+int LNext(List * plist, LData * pdata)
+{
+	if(plist->curPosision >=  (plist->numOfData)-1)
+		return FALSE;
+	(plist->curPosision)++;
+	*pdata = plist->arr[plist->curPosision];
+	return TRUE;
+}
+
+LData LRemove(List * plist)
+{
+	int rpost = plist->curPosision;
+	int num = plist->numOfData;
+	int i;
+	LData rdata = plist->arr[rpos];
+
+	for(i=rpos;i<num-1;i++)
+		plist->arr[i] = plist->arr[i+1];
+
+	(plist->numOfData)--;
+	(plist->curPosision)--;
+	return rdata;
+}
+
+int LCount(List * plist)
+{
+	return plist->numOfData;
+}
+
+```
+
+<aside>
+⭐ 리스트를 사용하기 위해서는 헤더파일 ArrayList.h를 포함하고, 이 헤더파일에 선언된 함수의 기능을 숙지하면된다.
+즉, 실제 리스트가 어떻게 구현되어 있는지 확인할 필요가 없다.
+
+정의한 리스트에 다른 종류의 데이터를 저장하고자 하는 경우 구조체와 구조체 관련 함수들만 따로 정의하며 이전에 작성했던 헤더파일(ArrayList.h)에서 일부를 변경한다.
+ADT를 제대로 구현했다면 소스파일에서 변경이 발생하면 안된다.
+
+</aside>
+
+### 배열 기반 리스트
+
+1. 장점
+    - 쉬운 데이터 참조
+    - 인덱스 값을 기준으로 어디든 한 번에 참조 가능
+2. 단점
+    - 배열의 길이 변경 불가능(초기에 결정)
+    - 삭제 과정에서 빈번한 이동(복사)
