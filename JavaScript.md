@@ -122,6 +122,13 @@ const dog = {
 
 - 키에 해당하는 값에는 공백이 있으면 안된다.
 ⇒ 공백이 있는 경우 따옴표로 감싼다. Ex) ‘key with space’: true
+```jsx
+//객체의 정보를 배열 형태로 받아올 수 있는 함수
+console.log(Object.entries(dog));    //[[name: "멍멍이"],[age: 2],[sound: "멍멍"]]
+console.log(Object.keys(dog));       //[name, age, sound]
+console.log(Object.values(dog));     //["멍멍이", 2, "멍멍"]
+```
+
 
 ### Getter함수
 
@@ -184,4 +191,78 @@ numbers.a = 9;    //a가 바뀝니다. -> calculate
 console.log(numbers.sum);    //16(9+7)
 console.log(numbers.sum);    //16(9+7)
 console.log(numbers.sum);    //16(9+7)
+```
+
+### 배열
+
+```jsx
+//배열 선언(숫자 배열)
+const array = [1,2,3,4,5];
+
+//배열 선언(객체 배열)
+const objects = [{ name: '멍멍이' }, { name: '야옹이' }];
+
+//배열 값 출력
+console.log(objects);    //name: "멍멍이"    name: "야옹이"
+console.log(objects[0]); //name: "멍멍이"
+console.log(objects[1]); //name: "야옹이"
+```
+
+- 배열에 새 항목 추가(push)
+    
+    ```jsx
+    object.push({
+    	name: '멍뭉이'
+    });
+    
+    console.log(objects);  //[[name: "멍멍이"], [name: "야옹이"], [name: "멍뭉이"]]
+    ```
+    
+- 배열의 크기 알아내기(length)
+    
+    ```jsx
+    console.log(objects.length);    //3
+    ```
+    
+
+### 반복문(for)
+
+```jsx
+for (초기 구문; 조건 구문; 변화 구문;) {
+  코드
+}
+
+//Ex. 0부터 9까지 출
+for (let i = 0; i < 10; i++) {
+  console.log(i);
+}
+```
+
+### 반복문(while)
+
+특정 조건이 참이라면 계속해서 반복하는 반복문
+
+```jsx
+let i = 0;
+while (i < 10) {
+  console.log(i);
+  i++;
+}
+```
+
+<aside>
+while 문을 사용 할 때에는 조건문이 언젠간 false 가 되도록 신경써야한다.
+만약에 언젠간 false 로 전환이 되지 않는다면 반복문이 끝나지 않고 영원히 반복된다.
+
+</aside>
+
+### 반복문(for…of) → 많이 사용X
+
+배열에 관한 반복문을 돌리기 위해 만들어진 반복
+
+```jsx
+let numbers = [10, 20, 30, 40, 50];
+for (let number of numbers) {
+  console.log(number);    //10 20 30 40 50
+}
 ```
