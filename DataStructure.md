@@ -434,3 +434,36 @@ ADT를 제대로 구현했다면 소스파일에서 변경이 발생하면 안�
 2. 단점
     - 배열의 길이 변경 불가능(초기에 결정)
     - 삭제 과정에서 빈번한 이동(복사)
+
+# 04-1. 연결 리스트의 개념적인 이해
+
+<aside>
+💡 배열은 메모리의 특성이 정적이므로 메모리의 길이를 변경하는 것이 불가능하다.<br>
+⇒ ‘동적인 메모리 구성’ 필요
+
+</aside>
+
+<img src="./img/LinkedList.png" width=400><br>
+그림으로 표현한 연결리스트
+
+### 데이터 저장(꼬리에 노드 추가)
+```c
+while(1)
+{
+	.... 생략 ....
+	newNode = (*Node)malloc(sizeof(Node));   //동적으로 노드 생성
+	newNode->data = readData;       //readData : 입력받은 데이터
+	newNode->next = NULL;
+
+	if(head == NULL)    //첫 번째 노드인 경우
+		head = newNode;
+	else                //두 번째 이후의 노드인 경우
+		tail->next = newNode;
+
+	tail = newNode;
+}
+```
+
+<img src='./img/LinkedListSaveBack.png' width=400>
+
+출처 : [https://lecor.tistory.com/2](https://lecor.tistory.com/2)
