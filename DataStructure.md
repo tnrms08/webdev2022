@@ -467,3 +467,45 @@ while(1)
 <img src='./img/LinkedListSaveBack.png' width=400>
 
 출처 : [https://lecor.tistory.com/2](https://lecor.tistory.com/2)
+
+### 데이터 조회
+```c
+if(head == NULL)
+	printf("데이터가 존재하지 않습니다.");
+else
+{
+	cur = head;  //첫 번째 노드부터 탐색(리스트 안을 돌아다닐 때 사용)
+	printf("%d ",cur->data);
+
+	while(cur->next != NULL)
+	{
+		cur = cur->next;
+		printf("%d ",cur->data);
+	}
+}
+```
+
+### 데이터 삭제(모든 데이터)
+```c
+if(head == NULL)
+	return 0;
+else
+{
+	Node * delNode = head;
+	Node * delNextNode = head->next;  //삭제될 노드가 가리키는 다음 노드의 주소 값
+
+	//첫 번째 노드 삭제
+	printf("%d 삭제\n", head->data);
+	free(delNode);   //노드 삭제(동적 할당한 메모리 해제)
+
+	//두 번째 이후의 노드 삭제
+	while(delNextNode != NULL)
+	{
+		delNode = delNextNode;
+		delNextNode = delNextNode->next;
+
+		printf("%d 삭제\n", delNode->data);
+		free(delNode);
+	}
+}
+```
