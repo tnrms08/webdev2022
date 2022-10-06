@@ -434,3 +434,125 @@ ADT를 제대로 구현했다면 소스파일에서 변경이 발생하면 안�
 2. 단점
     - 배열의 길이 변경 불가능(초기에 결정)
     - 삭제 과정에서 빈번한 이동(복사)
+
+# 04-1. 연결 리스트의 개념적인 이해
+
+<aside>
+💡 배열은 메모리의 특성이 정적이므로 메모리의 길이를 변경하는 것이 불가능하다.<br>
+⇒ ‘동적인 메모리 구성’ 필요
+
+</aside>
+
+<img src="./img/LinkedList.png" width=400><br>
+그림으로 표현한 연결리스트
+
+### 데이터 저장(꼬리에 노드 추가)
+```c
+while(1)
+{
+	.... 생략 ....
+	newNode = (*Node)malloc(sizeof(Node));   //동적으로 노드 생성
+	newNode->data = readData;       //readData : 입력받은 데이터
+	newNode->next = NULL;
+
+	if(head == NULL)    //첫 번째 노드인 경우
+		head = newNode;
+	else                //두 번째 이후의 노드인 경우
+		tail->next = newNode;
+
+	tail = newNode;
+}
+```
+
+<img src='./img/LinkedListSaveBack.png' width=400>
+
+출처 : [https://lecor.tistory.com/2](https://lecor.tistory.com/2)
+
+### 데이터 조회
+```c
+if(head == NULL)
+	printf("데이터가 존재하지 않습니다.");
+else
+{
+	cur = head;  //첫 번째 노드부터 탐색(리스트 안을 돌아다닐 때 사용)
+	printf("%d ",cur->data);
+
+	while(cur->next != NULL)
+	{
+		cur = cur->next;
+		printf("%d ",cur->data);
+	}
+}
+```
+
+### 데이터 삭제(모든 데이터)
+```c
+if(head == NULL)
+	return 0;
+else
+{
+	Node * delNode = head;
+	Node * delNextNode = head->next;  //삭제될 노드가 가리키는 다음 노드의 주소 값
+
+	//첫 번째 노드 삭제
+	printf("%d 삭제\n", head->data);
+	free(delNode);   //노드 삭제(동적 할당한 메모리 해제)
+
+	//두 번째 이후의 노드 삭제
+	while(delNextNode != NULL)
+	{
+		delNode = delNextNode;
+		delNextNode = delNextNode->next;
+
+		printf("%d 삭제\n", delNode->data);
+		free(delNode);
+	}
+}
+```
+# 04-2. 단순 연결 리스트의 ADT와 구현
+
+## 단순 연결 리스트
+
+- 연결의 형태가 한쪽 방향으로 전개되고 시작과 끝이 분명히 존재한다.
+
+|  | 머리에 노드 추가 | 꼬리에 노드 추가 |
+| --- | --- | --- |
+| 장점 | 포인터 변수 tail이 불필요 |  저장된 순서 유지 |
+| 단점 | 저장된 순서를 유지하지 않는다. | 포인터 변수 tail이 필요 |
+
+→ tail의 관리를 생략하기 위해서 머리에 추가하는 것을 원칙으로 한다.
+
+### 단순 연결 리스트의 ADT
+
+```c
+//리스트 초기화
+ListInit(List * plist);        
+//리스트에 데이터 저장       
+LInsert(List * plist,LData data);
+//첫 번째 데이터를 pdata가 가리키는 메모리에 저장     
+LFirst(List * plist,LData * pdata);
+ //참조된 데이터의 다음 데이터를 pdata가 가리키는 메모리에 저장   
+LNext(List * plist,LData * pdata);
+//LFirst 또는 LNext 함수의 마지막 반환 데이터 삭제   
+LRemove(List * plist);
+//리스트에 저장되어 있는 데이터의 수 반환                
+LCount(List * plist);
+
+//연결 리스트의 정렬기준 지정 함수
+void SetSortRule(List * plist, int (*comp)(LData d1, LData d2));  //두 번째 인자 : 함수의 주소 값
+```
+
+- comp 함수
+    
+    : 매개변수인 d1에 전달되는 인자가 정렬 순서상 head에 더 가까워야 하는 경우 → return 0
+    
+    : 매개변수인 d2에 전달되는 인자가 정렬 순서상 앞서거나 같은 경우 → return 1
+    
+
+### 더미 노드(Dummy Node) 기반의 단순 연결 리스트
+
+<aside>
+더미 노드를 사용하면 처음 추가되는 노드가 구조상 두 번째 노드가 되므로 노드의 추가, 삭제 및 조회의 과정을 일관된 형태로 구성할 수 있다.<br><br>
+ #더미노드 : 유효한 데이터를 지니지 않는 빈 노드
+
+</aside>
