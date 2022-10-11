@@ -556,3 +556,100 @@ void SetSortRule(List * plist, int (*comp)(LData d1, LData d2));  //두 번째 �
  #더미노드 : 유효한 데이터를 지니지 않는 빈 노드
 
 </aside>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "DLinkedList.h"
+
+void ListInit(List * plist)      //리스트 초기화
+{
+	plist->head = (*Node)malloc(sizeof(Node));  //더미 노드 생성
+	plist->head->next = NULL;
+	plist->comp = NULL;  //정렬기준X
+	plist->numOfData = 0;
+}
+
+void FInsert(List * plist, LData data)     //정렬기준이 없는 경우의 삽입
+{
+	Node * newNode = (*Node)malloc(sizeof(Node));
+	newNode -> data = data;
+
+	newNode->next = plist->head->next;
+	plist->head->next = newNode;
+
+	(plist->numOfData)++;
+}
+
+void SInsert(List * plist, LData data)     //정렬기준이 있는 경우의 삽입
+{
+	Node * newNode = (*Node)malloc(sizeof(Node));
+	Node * pred = plist->head;
+	newNode -> data = data;
+
+	//새 노드가 들어갈 위치 찾기
+	while(pred->next != NULL && plist->comp(data, pred->next->data) != 0)
+		pred = pred->next;
+	
+	newNode->next = pred->next;
+	pred->next = newNode;     //오른쪽에 새 노드 추가
+
+	(plist->numOfData)++;
+}
+
+void LInsert(List * plist, LData data)
+{
+	if(plist->comp == NULL)   //정렬기준이 없는 경우
+		FInsert(plist, data);
+	else
+		SInsert(plist, data)
+}
+
+int LFirst(List * plist, LData * pdata)
+{
+	if(plist->head->next == NULL)    //더미 노드가 NULL을 가리킬 경우
+		return FALSE;
+
+	plist->before = plist->head;     //before은 더미 노드 가리킴
+	plist->cur = plist->head->next;  //cur은 첫 번째 노드 가리킴
+
+	*pdata = plist->cur->data;
+	return TRUE;
+
+}
+
+int LNext(List * plist, LData * pdata)    //LFirst와 유사
+{
+	if(plist->cur->next == NULL)
+		return FALSE;
+
+	plist->before = plist->cur;
+	plist->cur = plist->cur->next;
+
+	*pdata = plist->cur->data;
+	return TRUE;
+}
+
+LData LRemove(List * plist)    //노드 제거
+{
+	Node * rpos = plist->cur;
+	LData rdata = rpos->data;
+
+	plist->before->next = plist->cur->next;
+	plist->cur = plist->before;
+
+	free(rpos);
+	(plist->numOfData)--;
+	return rdata;
+}
+
+int LCount(List * plist)
+{
+	return plist->numOfData;
+}
+ 
+void SetSortRule(List * plist, int (*comp)(LData d1, LData d2))
+{
+	plist->comp = comp;
+}
+```
