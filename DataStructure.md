@@ -709,4 +709,24 @@ void LInsertFront(List * plist, Data data)   //머리에 노드 삽입
 	(plist->numOfData)++;
 }
 ```
+```c
+void LInsert(List * plist, Data data)    //꼬리에 노드 삽입
+{
+	Node * newNode = (Node*)malloc(sizeof(Node));
+	newNode->data = data;
+	if(plist->tail == NULL)
+		{
+			plist->tail = newNode;
+			newNode->next = newNode;
+		}
+		else
+		{
+			newNode->next = plist->tail->next;
+			plist->tail->next = newNode;
+			plist->tail = newNode;
+		}
+		(plist->numOfData)++;
+	}
+}
+```
 
