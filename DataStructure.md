@@ -663,7 +663,7 @@ void SetSortRule(List * plist, int (*comp)(LData d1, LData d2))
     ⇒ 사실상 머리와 꼬리의 구분이 없다.
     
 
-<img src="./img/원형연결리스트.png">
+<img src="./img/원형연결리스트.png" width=400>
 
 - 단순 연결 리스트처럼 머리와 꼬리를 가리키는 포인터 변수를 각각 두지 않고 하나의 변수만 있어도 머리 또는 꼬리에 노드를 간단히 추가할 수 있다.
 
@@ -675,4 +675,38 @@ void SetSortRule(List * plist, int (*comp)(LData d1, LData d2))
     
 - 꼬리를 가리키는 포인터 변수 : tail
 - 머리를 가리키는 포인터 변수 : tail→next
-<img src="./img/변형_원형연결리스트.png">
+<img src="./img/변형_원형연결리스트.png" width=400>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "CLinkedList.h"
+
+void ListInit(List * plist)     //초기화 함수
+{
+	plist->tail = NULL;
+	plist->cur = NULL;
+	plist->before = NULL;
+	plist->numOfData = 0;
+}
+```
+```c
+void LInsertFront(List * plist, Data data)   //머리에 노드 삽입
+{
+	Node * newNode = (Node*)malloc(sizeof(Node));
+	newNode->data = data;
+
+	if(plist->tail == NULL)
+	{
+		plist->tail = newNode;
+		newNode->next = newNode;
+	}
+	else
+	{
+		newNode->next = plist->tail->next;
+		plist->tail->next = newNode;
+	}
+	(plist->numOfData)++;
+}
+```
+
