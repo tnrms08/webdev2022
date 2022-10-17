@@ -730,3 +730,28 @@ void LInsert(List * plist, Data data)    //꼬리에 노드 삽입
 }
 ```
 
+```c
+int LFirst(List * plist, Data * pdata);    //첫 번째 노드 조회
+{
+	if(plist->tail == NULL)   //저장된 노드가 없는 경우
+		return FALSE;
+	
+	**plist->before = plist->tail;
+	plist->cur = plist->tail->next;**
+
+	*pdata = plist->cur->data;
+	return TRUE;
+}
+
+int LNext(List * plist, Data * pdata)   //첫 번째 이후의 노드 조회
+{
+	if(plist->tail == NULL)
+		return FALSE;
+	
+	**plist->before = plist->cur;
+	plist->cur = plist->cur->next;**
+
+	*pdata = plist->cur->data;
+	return TRUE;
+}
+```
