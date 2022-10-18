@@ -755,3 +755,32 @@ int LNext(List * plist, Data * pdata)   //첫 번째 이후의 노드 조회
 	return TRUE;
 }
 ```
+```c
+Data LRemove(List * plist)    //노드 삭제
+{
+	Node * rpos = plist->cur;
+	Data rdata = rpos->data;
+
+	//삭제할 노드를 tail이 가리키는 경우
+	if(rpos == plist->tail)
+	{
+		//삭제할 노드가 리스트에 홀로 남은 경우
+		if(plist->tail == plist->tail->next)
+			plist->tail = NULL;
+		else
+			plist->tail = plist->before;
+	}
+	
+	plist->before->next = plist->cur->next;
+	plist->cur = plist->before;
+	
+	free(rpos);
+	(plist->numOfData)--;
+	return rdata;
+}
+
+int LCount(List * plist)  //데이터 개수
+{
+	return plist->numOfData;
+}
+```
