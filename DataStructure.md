@@ -730,3 +730,145 @@ void LInsert(List * plist, Data data)    //꼬리에 노드 삽입
 }
 ```
 
+```c
+int LFirst(List * plist, Data * pdata);    //첫 번째 노드 조회
+{
+	if(plist->tail == NULL)   //저장된 노드가 없는 경우
+		return FALSE;
+	
+	**plist->before = plist->tail;
+	plist->cur = plist->tail->next;**
+
+	*pdata = plist->cur->data;
+	return TRUE;
+}
+
+int LNext(List * plist, Data * pdata)   //첫 번째 이후의 노드 조회
+{
+	if(plist->tail == NULL)
+		return FALSE;
+	
+	**plist->before = plist->cur;
+	plist->cur = plist->cur->next;**
+
+	*pdata = plist->cur->data;
+	return TRUE;
+}
+```
+```c
+Data LRemove(List * plist)    //노드 삭제
+{
+	Node * rpos = plist->cur;
+	Data rdata = rpos->data;
+
+	//삭제할 노드를 tail이 가리키는 경우
+	if(rpos == plist->tail)
+	{
+		//삭제할 노드가 리스트에 홀로 남은 경우
+		if(plist->tail == plist->tail->next)
+			plist->tail = NULL;
+		else
+			plist->tail = plist->before;
+	}
+	
+	plist->before->next = plist->cur->next;
+	plist->cur = plist->before;
+	
+	free(rpos);
+	(plist->numOfData)--;
+	return rdata;
+}
+
+int LCount(List * plist)  //데이터 개수
+{
+	return plist->numOfData;
+}
+```
+# 05-2. 양방향 연결 리스트(Doubly Linked List)
+
+### 양방향 연결 리스트?
+
+- 노드가 양쪽방향으로 연결된 구조의 리스트
+- 종류  
+    <img src='./img/양방향 연결 리스트_기본.jpg' width=400> <br>
+	기본적인 양방향 연결 리스트<br><br>
+
+	<img src ='./img/양방향 연결 리스트_더미.jpg' width=500><br>
+	더미 노드가 추가된 양방향 연결 리스트<br><br>
+
+	<img src='./img/양방향 연결 리스트_연결 리스트.jpg' width=500><br>
+	양방향 연결 리스트이면서 연결 리스트의 구조를 동시에 지니는 리스트
+    
+
+<aside>
+양방향 연결 리스트는 양방향으로 얼마든지 조회가 가능하기 때문에 포인터 변수 before가 불필요하고, before을 유지하기 위해 존재하던 문장들도 불필요하다.
+⇒ 구현이 그렇게 복잡하지 않다.
+
+</aside>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "DBLinkedList.h"
+
+void ListInit(List * plist)
+{
+	plist->head = NULL;
+	plist->numOfData = 0;
+}
+
+void LInsert(List * plist, Data data)
+{
+	Node * newNode = (*Node)malloc(sizeof(Node));
+	newNode->data = data;
+
+	newNode->next = plist->head;
+	if(plist->head != NULL)  //두 번째 이후의 노드를 추가할 경우
+		plist->head->prev = newNode;
+	newNode->prev = NULL;
+	plist->head = newNode;
+	
+	(plist->numOfData)++;
+}
+
+//LFirst와 LNext 함수는 단방향 연결 리스트와 사실상 차이가 없으며
+//단방향 연결 리스트보다 간단히 구현된다.(before이 없어졌기 때문)
+void LFirst(List * plist, Data * pdata)  //첫 번째 노드의 데이터 조회
+{
+	if(plist->head == NULL)
+		return FALSE;
+	plist->cur = plist->head;
+	*pdata = plist->cur->data;
+
+	return TRUE;
+}
+
+void LNext(List * plist, Data * pdata)  //두 번째 이후의 노드 데이터 조회
+{
+	if(plist->cur->next == NULL)
+		return FALSE;
+	plist->cur = plist->cur->next;
+	*pdata = plist->cur->data;
+
+	return TRUE;
+}
+
+
+//prev를 이용해 cur 이동(LNext와의 유일한 차이점)
+int LPrevious(List * plist, Data * pdata)
+{
+	if(plist->cur->prev == NULL)
+		return FALSE;
+	
+	plist->cur = plist->cur->prev;
+	*pdata = plist->cur->data;
+
+	return TRUE;
+}
+
+
+int LCount(List * plist)
+{
+	return plist->numOfData;
+}
+```
