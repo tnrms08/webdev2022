@@ -805,3 +805,70 @@ int LCount(List * plist)  //데이터 개수
 ⇒ 구현이 그렇게 복잡하지 않다.
 
 </aside>
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "DBLinkedList.h"
+
+void ListInit(List * plist)
+{
+	plist->head = NULL;
+	plist->numOfData = 0;
+}
+
+void LInsert(List * plist, Data data)
+{
+	Node * newNode = (*Node)malloc(sizeof(Node));
+	newNode->data = data;
+
+	newNode->next = plist->head;
+	if(plist->head != NULL)  //두 번째 이후의 노드를 추가할 경우
+		plist->head->prev = newNode;
+	newNode->prev = NULL;
+	plist->head = newNode;
+	
+	(plist->numOfData)++;
+}
+
+//LFirst와 LNext 함수는 단방향 연결 리스트와 사실상 차이가 없으며
+//단방향 연결 리스트보다 간단히 구현된다.(before이 없어졌기 때문)
+void LFirst(List * plist, Data * pdata)  //첫 번째 노드의 데이터 조회
+{
+	if(plist->head == NULL)
+		return FALSE;
+	plist->cur = plist->head;
+	*pdata = plist->cur->data;
+
+	return TRUE;
+}
+
+void LNext(List * plist, Data * pdata)  //두 번째 이후의 노드 데이터 조회
+{
+	if(plist->cur->next == NULL)
+		return FALSE;
+	plist->cur = plist->cur->next;
+	*pdata = plist->cur->data;
+
+	return TRUE;
+}
+
+
+//prev를 이용해 cur 이동(LNext와의 유일한 차이점)
+int LPrevious(List * plist, Data * pdata)
+{
+	if(plist->cur->prev == NULL)
+		return FALSE;
+	
+	plist->cur = plist->cur->prev;
+	*pdata = plist->cur->data;
+
+	return TRUE;
+}
+
+
+int LCount(List * plist)
+{
+	return plist->numOfData;
+}
+```
