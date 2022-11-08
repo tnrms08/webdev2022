@@ -328,3 +328,35 @@
     > 
     > - 변수 : 소문자로 시작
     > - 함수 및 클래스 : 대문자로 시작
+
+### 마우스 버튼
+
+- mouse 0 : 왼쪽 버튼
+- mouse 1 : 오른쪽 버튼
+- mouse 2 : 가운데 버튼(휠)
+
+### Input 클래스
+
+- 사용자의 키 입력을 판정하는 클래스
+
+```csharp
+Input.GetAxis("Horiziontal"); //좌우 이동키의 이동 방향, A(-1), D(1)
+Input.GetAxis("Vertical");    //앞뒤 이동키의 이동 방향, S(-1), W(1)
+
+Input.GetKeyDown();           //특정한 키를 눌린 순간에만
+Input.GetKeyUp();             //특정한 키에서 손가락이 떨어진 순간에만
+
+Input.GetButtonDown();        //특정한 키나 버튼을 눌렀는지
+
+Input.GetMouseButton();       //마우스 버튼을 눌렀는지
+Input.GetMouseButtonDown();   //마우스 버튼을 눌린 순간에만
+Input.GetMouseButtonUp();     //마우스 버튼을 눌렀다 떨어진 순간에만
+
+Input.GetTouch();             //터치스크린 화면을 눌렀는지
+Input.anyKeyDown              //아무키나 눌린 순간에만
+
+Input.GetKey(KEYCODE)         //키보드의 특정 키가 눌렸는지 판정(True/False)
+
+Input.mousePosition           //화면상에서 마우스 포인터의 위치 반환, 화면 왼쪽 아래(0,0)
+```
+
