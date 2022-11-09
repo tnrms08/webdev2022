@@ -360,3 +360,36 @@ Input.GetKey(KEYCODE)         //키보드의 특정 키가 눌렸는지 판정(T
 Input.mousePosition           //화면상에서 마우스 포인터의 위치 반환, 화면 왼쪽 아래(0,0)
 ```
 
+### Rigidbody(중력)
+
+- 외력으로 움직이려면 Rigidbody 컴포넌트를 추가해야 한다.
+- [Component]-[Physics]-[Rigidbody]
+- Mass : 오브젝트의 질량
+- Drag : 오브젝트가 힘에 의해 움직일 때 공기 저항이 영향을 미치는 정도
+    - 0 : 공기 저항 X / 무한대 : 오브젝트가 즉시 정지
+- Angular Drag : 오브젝트가 **회전**할 때 공기 저항이 영향을 미치는 정도
+    - 0 : 공기 저항 X / 무한대 : 오브젝트의 회전 멈추지 않음
+- Use Gravity : 중력의 영향 여부
+- Is Kinematic : 물체에 가해지는 힘의 크기와 방향 등을 계산하지 않음
+    - Transfrom을 통해서만 물체 조작 가능
+- Interpolate
+    - 물체의 움직임이 지나치게 끊겨 보일 경우 사용
+    - None : 아무런 보정 없음
+    - Interpolate : 이전/다음 프레임의 Transform을 기반으로 근사
+    - Extrapolate : 이전/ 그 이전 프레임의 Transform을 기반으로 근사
+- Collision Detection
+    - Discrete
+        - 현재 프레임의 위치만으로 충돌 검사
+        - Tunneling 문제 : 충돌감지를 해야하는 데 안해서 통과할 수 없는 물체를 통과하는 현상
+    - Continuous
+        - 이전 프레임과 현재 프레임 사이의 이동 궤적을 바탕으로 충돌 검사
+        - 안정적인 충돌 검사 가능 / 계산량 증가
+        - Rigidbody를 가진 물체 : Discrete 검사, Rigidbody가 없는 물체 : Continuous 검사
+    - Continuous Dynamic
+        - Continuous나 Continuous Dynamic이 적용되거나 Rigidbody가 없는 물체 : Continuous 검사
+        - Discrete가 적용된 물체 : Discrete 검사
+        - 압도적인 계산량
+- Constraints
+    - 외력에 의한 움직임에 제약을 부여
+    - Freeze Position : 선택된 축 방향 이동불가
+    - Freeze Rotation : 선택된 축 중심 회전불가
