@@ -393,3 +393,68 @@ Input.mousePosition           //화면상에서 마우스 포인터의 위치 �
     - 외력에 의한 움직임에 제약을 부여
     - Freeze Position : 선택된 축 방향 이동불가
     - Freeze Rotation : 선택된 축 중심 회전불가
+
+### Rigid Body
+
+- 모든 오브젝트가 나무나 금속과 같은 단단한 재질로 구성
+- 오브젝트들끼리 부딪히면 튀어나가거나 부서짐
+- 질량, 저항, 중력
+
+### Soft Body
+
+- 오브젝트를 구성하고 있는 메쉬의 형태가 변형됨
+- Cloth
+
+### Physics Material
+
+- [Asset]-[Create]-[Physics Material]
+- Dynamic Friction : 물체의 면에 작동하는 운동 마찰력
+- Static Frictio : 정지 마찰력
+- Bounciness : 0 : 반동 발생X / 1 : 무한히 반동
+- Friction Combine : 다른 물리 재질과 충돌할 경우 최종 마찰력을 어떻게 산출할지 정함
+    - Average / Multipley(곱한 결과) / Minimum / Maximum
+
+```csharp
+public Renderer rend;
+
+void Update(){
+	rend.enabled = false;
+}
+
+//rend에 연결한(지정한) 오브젝트가 화면에서 사라진다.
+**//rend에 연결한 오브젝트를 구성하는 메쉬의 삼각형을 그리지 않도록 한다.**
+//Renderer : 물체가 보여지는 것을 조절하는 기능(enabled)를 가짐
+```
+
+```csharp
+void Update(){
+	//시작과 동시에 지정 위치로 이동(지정위치 != 실행위치)
+	transform.position new Vector3 (2,0,0);    //(2,0,0)에서 시작
+	
+	//마우스의 포인터 위치를 따라 이동(클릭시X)
+	//마우스 화면상의 위치로 패들 이동
+	transform.position = new Vector3 (Input.mousePosition.x,0,0);
+
+	//패들 애니메이션 보완
+	float halfW = Screen.width/2f;  
+	float halfH = Screen.height/3f;
+
+	//패들 이동 변화
+	//Input.mousePosition.x-halfW)/halfW => 패들의 이동 범위(X) : -1 ~ 1
+	//Input.mousePosition.y-halfH)/halfH => 패들의 이동 범위(Z) : -1 ~ 2  (뒤로 더 많이 이동)
+	//패들은 x축, z축을 따라 이동하는데 마우스는 x축, y축으로 이동
+	//=> 마우스 y의 값을 Vector3의 z위치에 사용
+	transform.position = new Vector3 ((Input.mousePosition.x-halfW)/halfW,0,(Input.mousePosition.y-halfH)/halfH);
+
+	//패들 기울기 변화
+	//마우스를 x축 방향으로 움직이면 z축을 기준으로 움직인다.
+	float tiltAroundZ = Input.GetAxis("Mouse X") * tiltAngle * 2f;
+	//마우스를 y축 방향으로 움직이면 x축을 기준으로 움직인다.	
+	float tiltAroudnX = Input.GetAxis("Mouse Y") * tiltAngle * -2f;
+
+	//오일러 각(x,y,z)에 해당하는 값을 쿼터니언(사원수) 각도(x,y,z,w)로 변환
+	var target = Quaternion.Euler (new Vector3(tiltAroudnX, 0, tiltAroundZ);
+	//두 개의 쿼터니언 각도의 중간 각도 계산
+	transform.rotaion = Quaternion.Slerp(transform.rotaion, target, Time.deltaTie * smooth);
+}
+```
