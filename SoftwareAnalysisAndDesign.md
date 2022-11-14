@@ -458,3 +458,31 @@ void Update(){
 	transform.rotaion = Quaternion.Slerp(transform.rotaion, target, Time.deltaTie * smooth);
 }
 ```
+
+### Time.deltaTime
+
+- 직전 프레임과 현재 프레임 사이의 경과 시간(소요 시간)
+- 매 프레임 이동거리 = 속도 * Time.deltaTime
+
+### 사원수(Quanternion)
+
+- 3차원 그래픽에서 회전을 표현할 때, 행렬 대신 사용하는 수학적 개념
+- 4개의 값으로 이수
+
+```csharp
+void Update(){
+	//기존 위치를 기준으로(rnd, rnd, rnd)만큼 이동
+	float rnd = Random.Range (-0.2f, 0.2f);
+	this.transform.position += new Vector3 (rnd, rnd, rnd);  //this : 스크립트가 연결된 물체, 생략가능
+	**//this.transform.Translate(이동거리); -> 아래의 표**
+
+	//각도 변경
+	float rnd = Random.Range (0.0f, 360.2f);
+	this.transfrom.rotation = Quanternion.Euler (rnd, 0.0f, 0.0f);  //x축을 기준으로 회전
+	**//this.transform.Rotate(x회전각, y회전각, z회전각);  //각 기본축을 중심으로 회전할 각도 지정**
+
+	//확대/축소 비율 변경
+	float rnd = Random.Range (0.5f, 1.5f);
+	this.transform.localScale = new Vector3 (rnd, rnd, rnd);
+}
+```
