@@ -486,3 +486,15 @@ void Update(){
 	this.transform.localScale = new Vector3 (rnd, rnd, rnd);
 }
 ```
+
+### 벡터
+
+- 크기와 방향이 함께 존재
+- Vector2 : 2차원 평면벡터
+- Vector3 :간 벡터
+
+### 경계 볼륨
+
+- **구** / **상자** / 원기둥 / 타원체 / 마름모꼴 / 캡슐
+- 용도 : 가시성 테스트와 충돌 테스트의 가속
+- 충돌 체크시 경계 볼륨을 이용
