@@ -870,3 +870,25 @@ int LCount(List * plist)
 	return plist->numOfData;
 }
 ```
+
+
+# 06-1. 스택의 이해와 ADT 정의
+
+### 스택(Stack)이란
+
+- 나중에 들어간 것이 먼저 나오는 자료구조 ⇒ 입력된 데이터가 역순으로 출력된다.
+- 후입선출 방식의 자료구조
+- LIFO(Last In First Out)구조
+
+### 스택의 ADT
+
+```c
+void StackInit(Stack * pstack);    //스택 초기화
+int SIsEmpty(Stack * pstack);      //스택이 비었는지 확인
+
+//스택에 데이터 저장(Top을 한칸 올리고 Top이 가리키는 위치에 데이터 저장)
+void SPush(Stack * pstack, Data data);
+//마지막에 저장된 요소 삭제(Top이 가리키는 데이터 반환, Top을 한칸 내림)
+Data SPop(Stack * pstack);
+Data SPeek(Stack * pstack)**;**        //마지막에 저장된 요소 반환(삭제X)
+```
