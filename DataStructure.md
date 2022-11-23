@@ -892,3 +892,9 @@ void SPush(Stack * pstack, Data data);
 Data SPop(Stack * pstack);
 Data SPeek(Stack * pstack)**;**        //마지막에 저장된 요소 반환(삭제X)
 ```
+
+<aside>
+배열의 길이에 상관 없이 언제나 인덱스 0의 요소가 스택의 바닥이 되도록 정의한다.
+마지막에 저장된 데이터의 위치를 기억해야 한다.(topIndex)
+
+</aside>
