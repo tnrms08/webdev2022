@@ -516,3 +516,23 @@ void Update(){
     - Loop : 반복 재생
     - Priority : 우선순위(0: 최고, 256: 최소, 128: 기본값)
     - Pitch : 재생 속도
+
+### 프리팹(Prefab)
+
+```Instantiate(prefab); //prefab의 사본 생성```
+
+- 게임 오브젝트의 원본을 가지고 있는 데이터
+- 프로젝트 뷰에 존재
+- Original Prefab : 기존에 해당 물체를 가져온 원본과의 연결을 삭제
+- Prefab Variant : 원본과의 연결을 유지
+
+### SceneManager.LoadScene
+
+- 매개변수로 지정한 Scene을 불러옴
+    - 서로 다른 공간으로 구성된 장면 사이를 전환하는 효과
+- scene_name : 구성한 장면 이름
+- scene_index : 장면의 인덱스 번호
+- mode
+    - LoadSceneMode.Single (기본) : 현재 로드되어 있는 장면을 지우고 새로 불러옴
+    - LoadSceneMode.Additive : 현재 로드되어 있는 장면에 추가로 겹쳐서 불러옴
+    

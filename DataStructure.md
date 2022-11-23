@@ -870,3 +870,84 @@ int LCount(List * plist)
 	return plist->numOfData;
 }
 ```
+
+
+# 06-1. 스택의 이해와 ADT 정의
+
+### 스택(Stack)이란
+
+- 나중에 들어간 것이 먼저 나오는 자료구조 ⇒ 입력된 데이터가 역순으로 출력된다.
+- 후입선출 방식의 자료구조
+- LIFO(Last In First Out)구조
+
+### 스택의 ADT
+
+```c
+void StackInit(Stack * pstack);    //스택 초기화
+int SIsEmpty(Stack * pstack);      //스택이 비었는지 확인
+
+//스택에 데이터 저장(Top을 한칸 올리고 Top이 가리키는 위치에 데이터 저장)
+void SPush(Stack * pstack, Data data);
+//마지막에 저장된 요소 삭제(Top이 가리키는 데이터 반환, Top을 한칸 내림)
+Data SPop(Stack * pstack);
+Data SPeek(Stack * pstack)**;**        //마지막에 저장된 요소 반환(삭제X)
+```
+
+<aside>
+배열의 길이에 상관 없이 언제나 인덱스 0의 요소가 스택의 바닥이 되도록 정의한다.
+마지막에 저장된 데이터의 위치를 기억해야 한다.(topIndex)
+
+</aside>
+
+### 구현(ArrayBaseStack.c)
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "ArrayBaseStack.h"
+
+void StackInit(Stack * pstack)
+{
+	pstack->topIndex = -1;
+}
+
+int SIsEmpty(Stack * pstack)
+{
+	if(pstack->topIndex == -1)
+		return TRUE;
+	else
+		return FALSE;
+}
+
+void SPush(Stack * pstack, Data data)
+{
+	pstack->topIndex += 1;
+	pstack->stackArr[pstack->topIndex] = data;
+}
+
+Data SPop(Stack * pstack)
+{
+	int rIdx;
+
+	if(SIsEmpty(pstack))
+	{
+		printf("Stack Memory Error!");
+		exit(-1);
+	}
+	
+	rIdx = pstack->topIndex;
+	pstack->topIndex -= 1;
+
+	return pstack->stackArr[rIdx];
+}
+
+Data SPeek(Stack * pstack)
+{
+	if(SIsEmpty(pstack))
+	{
+		printf("Stack Memory Error!");
+		exit(-1);
+	}
+
+	return pstack->stackArr[pstack->topIndex];
+```
