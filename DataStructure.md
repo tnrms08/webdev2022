@@ -1018,3 +1018,24 @@ Data SPeek(Stack * pstack)
 
 	return pstack->head->data;
 ```
+
+# 07-1. 큐의 이해와 ADT 정의
+
+### 큐(Queue)란
+
+![Untitled](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbzszFt%2Fbtq107cKPOS%2FclzBH638EUkM45ee0kXntK%2Fimg.png)
+
+- 먼저 들어간 데이터가 먼저 나오는 구조
+- 선입선출 구조
+- FIFO(First-In, First-Out) 구조
+
+### 큐의 ADT
+
+```c
+void QueueInit(Queue * pq);      //큐의 초기화
+int QIsEmpty(Queue * pq);        //큐가 비었는지 확인하는 함수
+
+void Enqueue(Queue * pq, Data data);   //큐에 데이터 저장
+Data Dequeue(Queue * pq);        //가장 먼저 저장된 데이터 삭제
+Data QPeek(Queue *pq);           //가장 먼저 저장된 데이터 반환(삭제X)
+```
