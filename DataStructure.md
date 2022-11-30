@@ -1039,3 +1039,100 @@ void Enqueue(Queue * pq, Data data);   //큐에 데이터 저장
 Data Dequeue(Queue * pq);        //가장 먼저 저장된 데이터 삭제
 Data QPeek(Queue *pq);           //가장 먼저 저장된 데이터 반환(삭제X)
 ```
+# 07-2. 큐의 배열 기반 구현
+### 헤더파일(CircularQueue.h)
+
+```c
+#ifndef __C_QUEUE_H__
+#define __C_QUEUE_H__
+
+#define TRUE 1
+#define FALSE 0
+
+#define QUE_LEN 100
+typedef int Data;
+
+typedef struct _cQueue
+{
+	int front;
+	int rear;
+	Data queArr[QUE_LEN];
+} CQueue;
+
+typedef CQueue Queue;
+
+void QueueInit(Queue * pq);
+int QIsEmpty(Queue * pq);
+
+void Enqueue(Queue * pq, Data data);
+Data Dequeue(Queue * pq);
+Data QPeek(Queue *pq);
+
+#endif
+```
+
+### 소스코드(CircularQueue.c)
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "CircularQueue.h"
+
+void QueueInit(Queue * pq)
+{
+	pq->front = 0;
+	pq->rear = 0;
+}
+
+int QIsEmpty(Queue * pq)
+{
+	if(pq->front == pq->rear)
+		return TRUE;
+	else
+		return FALSE;
+}
+
+//front와 rear의 회전을 돕는 함수
+int NextPosIdx(int pos) //큐의 다음 위치에 해당하는 인덱스 값 변환
+{
+	if(pos == QUE_LEN-1)
+		return 0;
+	else
+		return pos+1;
+}
+
+void Enqueue(Queue * pq, Data data)
+{
+	if(NextPosIdx(pq->rear) == pq->front)  //queue가 꽉찬 경우
+	{
+		printf("Queue Memory Error!");
+		exit(-1);
+	}
+	
+	pq -> rear = NextPosIdx(pq->rear);
+	pq -> queArr[pq->rear] = data;
+}
+
+Data Dequeu(Queue * pq)
+{
+	if(QIsEmpty(pq))
+	{
+		printf("Queue Memory Error!");
+		exit(-1);
+	}
+	
+	pq->front = NextPosIdx(pq->front);
+	return pq->queArr[pq->front];
+}
+
+Data QPeek(Queue * pq)
+{
+	if(QIsEmpty(pq))
+	{
+		printf("Queue Memory Error!");
+		exit(-1);
+	}
+	
+	return pq->queArr[NextPosIdx(pq->front)];
+}
+```
