@@ -951,3 +951,295 @@ Data SPeek(Stack * pstack)
 
 	return pstack->stackArr[pstack->topIndex];
 ```
+# 06-3. 스택의 연결 리스트 기반 구현
+
+<aside>
+💡 새로운 노드를 머리에 추가하는 형태로 구현한 연결리스트와 유사하다.
+
+</aside>
+
+### 구현(ListBaseStack.c)
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "ListBaseStack.h"
+
+void StackInit(Stack * pstack)
+{
+	pstack->head = NULL;
+}
+
+int SIsEmpty(Stack * pstack)
+{
+	if(pstack->head == NULL)
+		return TRUE;
+	else
+		return FALSE;
+}
+
+void SPush(Stack * pstack, Data data)   //리스트의 머리에 새 노드 추가
+{
+	Node * newNode = (Node*)malloc(sizeof(Node));
+
+	newNode->data = data;
+	newNode->next = pstack->head;  //새 노드가 최근에 추가된 노드를 가리킴
+
+	pstack->head = newNode;
+}
+
+Data SPop(Stack * pstack)
+{
+	Data rdata;
+	Node * rnode;
+
+	if(SIsEmpty(pstack))
+	{
+		printf("Stack Memory Error!");
+		exit(-1);
+	}
+	
+	rdata = pstack->head->data;
+	rnode = pstack->head;
+	
+	pstack->head = pstack->head->next;
+	free(rnode);
+
+	return rdata;
+}
+
+Data SPeek(Stack * pstack)
+{
+	if(SIsEmpty(pstack))
+	{
+		printf("Stack Memory Error!");
+		exit(-1);
+	}
+
+	return pstack->head->data;
+```
+
+# 07-1. 큐의 이해와 ADT 정의
+
+### 큐(Queue)란
+
+![Untitled](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbzszFt%2Fbtq107cKPOS%2FclzBH638EUkM45ee0kXntK%2Fimg.png)
+
+- 먼저 들어간 데이터가 먼저 나오는 구조
+- 선입선출 구조
+- FIFO(First-In, First-Out) 구조
+
+### 큐의 ADT
+
+```c
+void QueueInit(Queue * pq);      //큐의 초기화
+int QIsEmpty(Queue * pq);        //큐가 비었는지 확인하는 함수
+
+void Enqueue(Queue * pq, Data data);   //큐에 데이터 저장
+Data Dequeue(Queue * pq);        //가장 먼저 저장된 데이터 삭제
+Data QPeek(Queue *pq);           //가장 먼저 저장된 데이터 반환(삭제X)
+```
+# 07-2. 큐의 배열 기반 구현
+### 헤더파일(CircularQueue.h)
+
+```c
+#ifndef __C_QUEUE_H__
+#define __C_QUEUE_H__
+
+#define TRUE 1
+#define FALSE 0
+
+#define QUE_LEN 100
+typedef int Data;
+
+typedef struct _cQueue
+{
+	int front;
+	int rear;
+	Data queArr[QUE_LEN];
+} CQueue;
+
+typedef CQueue Queue;
+
+void QueueInit(Queue * pq);
+int QIsEmpty(Queue * pq);
+
+void Enqueue(Queue * pq, Data data);
+Data Dequeue(Queue * pq);
+Data QPeek(Queue *pq);
+
+#endif
+```
+
+### 소스코드(CircularQueue.c)
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "CircularQueue.h"
+
+void QueueInit(Queue * pq)
+{
+	pq->front = 0;
+	pq->rear = 0;
+}
+
+int QIsEmpty(Queue * pq)
+{
+	if(pq->front == pq->rear)
+		return TRUE;
+	else
+		return FALSE;
+}
+
+//front와 rear의 회전을 돕는 함수
+int NextPosIdx(int pos) //큐의 다음 위치에 해당하는 인덱스 값 변환
+{
+	if(pos == QUE_LEN-1)
+		return 0;
+	else
+		return pos+1;
+}
+
+void Enqueue(Queue * pq, Data data)
+{
+	if(NextPosIdx(pq->rear) == pq->front)  //queue가 꽉찬 경우
+	{
+		printf("Queue Memory Error!");
+		exit(-1);
+	}
+	
+	pq -> rear = NextPosIdx(pq->rear);
+	pq -> queArr[pq->rear] = data;
+}
+
+Data Dequeu(Queue * pq)
+{
+	if(QIsEmpty(pq))
+	{
+		printf("Queue Memory Error!");
+		exit(-1);
+	}
+	
+	pq->front = NextPosIdx(pq->front);
+	return pq->queArr[pq->front];
+}
+
+Data QPeek(Queue * pq)
+{
+	if(QIsEmpty(pq))
+	{
+		printf("Queue Memory Error!");
+		exit(-1);
+	}
+	
+	return pq->queArr[NextPosIdx(pq->front)];
+}
+```
+
+# 07-3. 큐의 연결 리스트 기반 구현
+
+### 헤더파일(ListBaseQueue.h)
+
+```c
+#ifndef __LB_QUEUE_H__
+#define __LB_QUEUE_H__
+
+#define TRUE 1
+#define FALSE 0
+
+typedef int Data;
+
+typedef struct _node
+{
+	Data data;
+	struct _node * next;
+} Node;
+
+typedef struct _lQueue
+{
+	Node * front;
+	Node * rear;
+} LQueue;
+
+typedef LQueue Queue;
+
+void QueueInit(Queue * pq);
+int QIsEmpty(Queue * pq);
+
+void Enqueue(Queue * pq, Data data);
+Data Dequeue(Queue * pq);
+Data QPeek(Queue *pq);
+
+#endif
+```
+
+### 소스코드(ListBaseQueue.c)
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "ListBaseQueue.h"
+
+void QueueInit(Queue * pq)
+{
+	pq->front = NULL;
+	pq->rear = NULL;
+}
+
+int QIsEmpty(Queue * pq)
+{
+	if(pq->front == NULL)
+		return TRUE;
+	else
+		return FALSE;
+}
+
+void Enqueue(Queue * pq, Data data)
+{
+	Node * newNode = (Node*)malloc(sizeof(Node));
+	newNode -> next = NULL;
+	newNode -> data = data;
+
+	if(QIsEmpty(pq))
+	{
+		pq->front = newNode;
+		pq->rear = newNode;
+	}
+	else
+	{
+		pq->rear->next = newNode;
+		pq->rear = newNode;
+	}
+}
+
+Data Dequeu(Queue * pq)
+{
+	Node * delNode;
+	Data retData;
+
+	if(QIsEmpty(pq))
+	{
+		printf("Queue Memory Error!");
+		exit(-1);
+	}
+	
+	delNode = pq->front;
+	retData = delNode->data;
+	pq->front = pq->front->next;
+
+	free(delNode);
+	return retData;
+}
+
+Data QPeek(Queue * pq)
+{
+	if(QIsEmpty(pq))
+	{
+		printf("Queue Memory Error!");
+		exit(-1);
+	}
+	
+	return pq->front->data;
+}
+```
