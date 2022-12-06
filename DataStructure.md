@@ -1266,3 +1266,78 @@ Data QPeek(Queue * pq)
     - 불고기버거 15초
     - 더블버거 24초
 - 주문한 메뉴를 받을 다음 고객은 대기실에서 나와서 대기한다.
+
+### 코드(원형큐 사용)
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include "CircularQueue.h"
+
+#define CUS_COME_TIME 15   //고객의 주문 간격(15초)
+
+#define CHE_BUR 0  //치즈버거
+#define BUL_BUR 1  //불고기버거
+#define DUB_BUR 2  //더블버거
+
+#define CHE_THRM 12 //치즈버거 제작시간(12초)
+#define BUL_THRM 15 //불고기버거 제작시간(12초)
+#define DUB_THRM 24 //더블버거 제작시간(12초)
+
+int main(void)
+{
+	int makProc = 0;     /햄버거 제작 진행상황
+	int cheOrder = 0, bulOrder = 0, dubOrder = 0;
+	int sec;
+
+	Queue que;
+	QueueInit(&que);
+	srand(time(NULL);
+
+	for(sec=0;sec<3600;sec++)
+	{
+		if(sec % CUS_COME_TIME == 0)
+		{
+			switch(rand() % 3)
+			{
+			case CHE_BUR:
+				Enque(que, CHE_TERM);
+				cheOrder++;
+				break;
+			case BUL_BUR:
+				Enque(que, BUL_TERM);
+				bulOrder++;
+				break;
+			case DUB_BUR:
+				Enque(que,DUB_TERM);
+				dubOrder++;
+				break;
+			}
+		}
+		if(makeProc<=0 && !QIsEmpty(&que))
+			//메뉴를 받을 사람은 대기실에서 나와서 대기한다.
+			//makeProc가 0이 됐다는 것은 버거가 완성되었다는 것
+			makeProc = Dequeue(&que);
+
+		makeProc--;
+	}
+
+	printf("Simulation Report! \n");
+	printf(" - Cheese burger : %d \n", cheOrder);
+	printf(" - Bulgogi burger : %d \n", bulOrder);
+	printf(" - Double burger : %d \n", dubOrder);
+	printf(" - Waiting room size : %d \n", QUE_LEN);
+	
+	return 0;
+}
+```
+
+<aside>
+대기실이 꽉 차면 Enqueue 함수의 호출과정에서 “Queue Memory Error!”가 출력되며 종료
+⇒ 대기하는 고객 전부를 수용하는 것이 불가능하다
+
+for문을 무사히 빠져나오면 버거 별 주문 수량, 대기실 크기 출력됨
+⇒ 대기실의 자리가 부족하지 않았다.
+
+</aside>
