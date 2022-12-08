@@ -1355,3 +1355,19 @@ for문을 무사히 빠져나오면 버거 별 주문 수량, 대기실 크기 �
 💡 노드가 양방향으로 연결되어 있지 않으면 꼬리에 위치한 노드를 삭제하는 것이 쉽지 않기 때문에 양방향 연결 리스트 기반으로 구현하는 것이 가장 어울린다.
 
 </aside>
+
+### 덱의 ADT
+
+```c
+void DequeInit(Deque * pdeq);   //초기화
+int DIsEmpty(Deque * pdeq);     //비었는지 확인
+
+void DQAddFirst(Deque * pdeq, Data data);  //머리에 데이터 저장
+void DQAddLast(Deque * pdeq, Data data);   //꼬리에 데이터 저장
+
+Data DQRemoveFirst(Deque * pdeq);  //머리의 데이터 반환 및 소멸
+Data DQRemoveLast(Deque * pdeq);   //꼬리의 데이터 반환 및 소멸
+
+Data DQGetFirst(Deque * pdeq);  //머리의 데이터 반환
+Data DQGetLast(Deque * pdeq);   //꼬리의 데이터 반환
+```
