@@ -1243,3 +1243,131 @@ Data QPeek(Queue * pq)
 	return pq->front->data;
 }
 ```
+# 07-4. 큐의 활용
+
+<aside>
+💡 큐는 운영체제 및 네트워크와 관련된 소프트웨어의 구현에 있어서 중요한 역할을 담당하는 자료구조이다.
+
+</aside>
+
+## 시뮬레이션
+
+### 주제
+
+- 최적의 대기실 크기를 정하기 위한 시뮬레이션 결과 도출
+
+### 조건(가정)
+
+- 점심시간은 1시간, 15초에 1명씩 주문
+- 한 명의 고객은 하나의 메뉴만 주문(무작위로 선택)
+- 햄버거를 만드는 사람은 1명
+- 둘 이상의 버거가 동시에 만들어지지 않는다
+    - 치즈버거 12초
+    - 불고기버거 15초
+    - 더블버거 24초
+- 주문한 메뉴를 받을 다음 고객은 대기실에서 나와서 대기한다.
+
+### 코드(원형큐 사용)
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include "CircularQueue.h"
+
+#define CUS_COME_TIME 15   //고객의 주문 간격(15초)
+
+#define CHE_BUR 0  //치즈버거
+#define BUL_BUR 1  //불고기버거
+#define DUB_BUR 2  //더블버거
+
+#define CHE_THRM 12 //치즈버거 제작시간(12초)
+#define BUL_THRM 15 //불고기버거 제작시간(12초)
+#define DUB_THRM 24 //더블버거 제작시간(12초)
+
+int main(void)
+{
+	int makProc = 0;     /햄버거 제작 진행상황
+	int cheOrder = 0, bulOrder = 0, dubOrder = 0;
+	int sec;
+
+	Queue que;
+	QueueInit(&que);
+	srand(time(NULL);
+
+	for(sec=0;sec<3600;sec++)
+	{
+		if(sec % CUS_COME_TIME == 0)
+		{
+			switch(rand() % 3)
+			{
+			case CHE_BUR:
+				Enque(que, CHE_TERM);
+				cheOrder++;
+				break;
+			case BUL_BUR:
+				Enque(que, BUL_TERM);
+				bulOrder++;
+				break;
+			case DUB_BUR:
+				Enque(que,DUB_TERM);
+				dubOrder++;
+				break;
+			}
+		}
+		if(makeProc<=0 && !QIsEmpty(&que))
+			//메뉴를 받을 사람은 대기실에서 나와서 대기한다.
+			//makeProc가 0이 됐다는 것은 버거가 완성되었다는 것
+			makeProc = Dequeue(&que);
+
+		makeProc--;
+	}
+
+	printf("Simulation Report! \n");
+	printf(" - Cheese burger : %d \n", cheOrder);
+	printf(" - Bulgogi burger : %d \n", bulOrder);
+	printf(" - Double burger : %d \n", dubOrder);
+	printf(" - Waiting room size : %d \n", QUE_LEN);
+	
+	return 0;
+}
+```
+
+<aside>
+대기실이 꽉 차면 Enqueue 함수의 호출과정에서 “Queue Memory Error!”가 출력되며 종료
+⇒ 대기하는 고객 전부를 수용하는 것이 불가능하다
+
+for문을 무사히 빠져나오면 버거 별 주문 수량, 대기실 크기 출력됨
+⇒ 대기실의 자리가 부족하지 않았다.
+
+</aside>
+
+# 07-5. 덱(Deque)의 이해와 구현
+
+### 덱(Deque)이란
+<img src = "./img/deck.png" width = 300/>
+
+- 양방향으로 넣고 뺄 수 있는 자료구조
+- 스택과 큐의 특성을 모두 갖는다
+- 스택과 큐를 조합한 형태의 자료구조
+
+<aside>
+💡 노드가 양방향으로 연결되어 있지 않으면 꼬리에 위치한 노드를 삭제하는 것이 쉽지 않기 때문에 양방향 연결 리스트 기반으로 구현하는 것이 가장 어울린다.
+
+</aside>
+
+### 덱의 ADT
+
+```c
+void DequeInit(Deque * pdeq);   //초기화
+int DIsEmpty(Deque * pdeq);     //비었는지 확인
+
+void DQAddFirst(Deque * pdeq, Data data);  //머리에 데이터 저장
+void DQAddLast(Deque * pdeq, Data data);   //꼬리에 데이터 저장
+
+Data DQRemoveFirst(Deque * pdeq);  //머리의 데이터 반환 및 소멸
+Data DQRemoveLast(Deque * pdeq);   //꼬리의 데이터 반환 및 소멸
+
+Data DQGetFirst(Deque * pdeq);  //머리의 데이터 반환
+Data DQGetLast(Deque * pdeq);   //꼬리의 데이터 반환
+```
