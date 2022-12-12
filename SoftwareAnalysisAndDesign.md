@@ -535,4 +535,3 @@ void Update(){
 - mode
     - LoadSceneMode.Single (기본) : 현재 로드되어 있는 장면을 지우고 새로 불러옴
     - LoadSceneMode.Additive : 현재 로드되어 있는 장면에 추가로 겹쳐서 불러옴
-    
