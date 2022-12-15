@@ -535,3 +535,23 @@ void Update(){
 - mode
     - LoadSceneMode.Single (기본) : 현재 로드되어 있는 장면을 지우고 새로 불러옴
     - LoadSceneMode.Additive : 현재 로드되어 있는 장면에 추가로 겹쳐서 불러옴
+
+### RigidbodyConstraints
+
+- Rigidbody가 추가된 물체의 움직임에 제약을 부여
+- 물리적인 반응에 대한 움직임만 해당, Translate()는 적용됨
+- FreezePosition - FreezePositionX, FreezePositionY, FreezePositionZ
+- FreezeRotation - FreezeRotationX, FreezeRotationY, FreezeRotationZ
+- FreezeAll : 물체의 이동과 회전을 전부 금지
+
+### WebGL
+
+- 게임을 웹에서 실행할 수 있도록 해준다.
+
+```csharp
+Build And Run 실행
+```
+
+- 플러그인을 사용하지 않고 OpenGL ES 2.0 기반 API를 이용하여 브라우저의 HTML canvas에 렌더링하여 3D 웹 콘텐츠 제작을 가능함
+- 컴퓨터의 그래픽 처리 장치(GPU)에서 실행되는 자바스크립트나 특수 효과(셰이더 코드)코드로 구성됨
+- WebGL 요소들은 다른 HTML 요소들과 혼합될 수 있고 페이지나 페이지 배경의 다른 부분과 합성될 수 있음
