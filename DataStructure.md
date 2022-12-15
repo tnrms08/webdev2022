@@ -1371,3 +1371,203 @@ Data DQRemoveLast(Deque * pdeq);   //꼬리의 데이터 반환 및 소멸
 Data DQGetFirst(Deque * pdeq);  //머리의 데이터 반환
 Data DQGetLast(Deque * pdeq);   //꼬리의 데이터 반환
 ```
+
+### 헤더파일(Deque.h)
+
+```c
+#ifndef __DEQUE_H__
+#define __DEQUE_H__
+
+#define TRUE 1
+#define FALSE 0
+
+typedef int Data;
+
+typedef struct _node
+{
+	Data data;
+	struct _node * next;
+	struct _node * prev;
+} Node;
+
+typedef struct _dlDeque
+{
+	Node * head;
+	Npde * tail;
+} DLDeque;
+
+typedef DLDeque Deque;
+
+void DequeInit(Deque *pdeq);
+int DQIsEmpty(Deque *pdeq);
+
+void DQAddFirst(Deque *pdeq, Data data);    //머리에 데이터 추가
+void DQAddLast(Deque *pdeq, Data data);     //꼬리에 데이터 추가
+
+Data DQRemoveFirst(Deque *pdeq);    //머리에서 데이터 삭제
+Data DQRemoveLast(Deque *pdeq);     //꼬리에서 데이터 삭제
+
+Data DQGetFirst(Deque *pdeq);   //머리에서 데이터 반환
+Data DQGetLast(Deque *pdeq);    //꼬리에서 데이터 반환
+
+#endif
+```
+
+### 구현코드(Deque.c)
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "Deque.h"
+
+void DequeInit(Deque *pdeq)
+{
+    pdeq->head = NULL;
+    pdeq->tail = NULL;
+}
+
+int DQIsEmpty(Deque *pdeq)
+{
+    if(pdeq->head == NULL)  //head가 NULL이면 비어있는 덱
+        return TRUE;
+    else
+        return FALSE;
+}
+
+void DQAddFirst(Deque *pdeq, Data data)
+{
+    Node *newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+    
+    newNode->next = pdeq->head;
+    
+    if(DQIsEmpty(pdeq))
+        pdeq->tail = newNode;
+    else
+        pdeq->head->prev = newNode;
+        
+    newNode->prev = NULL;
+    pdeq->head = newNode;
+}
+
+void DQAddLast(Deque *pdeq, Data data)
+{
+    Node * newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+
+    newNode->prev = pdeq->tail;
+    
+    if(DQIsEmpty(pdeq))
+        pdeq->head = newNode;
+    else
+        pdeq->tail->next = newNode;
+    
+    newNode->next = NULL;
+    pdeq->tail = newNode;
+}
+
+Data DQRemoveFirst(Deque *pdeq)
+{
+    Node *rnode = pdeq->head;
+    Data rdata = pdeq->head->data;
+    
+    if(DQIsEmpty(pdeq))
+    {
+        printf("Deque Memory Error!");
+        exit(-1);
+    }
+    
+    pdeq->head = pdeq->head->next;
+    free(rnode);
+    
+    if(pdeq->head == NULL)
+        pdeq->tail = NULL;
+    else
+        pdeq->head->prev = NULL;
+}
+
+Data DQRemoveLast(Deque *pdeq)
+{
+    Node *rnode = pdeq->tail;
+    Data rdata = pdeq->tail->data;
+    
+    if(DQIsEmpty(pdeq))
+    {
+        printf("Deque Memory Error!");
+        exit(-1);
+    }
+    
+    pdeq->tail = pdeq->tail->prev;
+    free(rnode);
+    
+    if(pdeq->tail == NULL)
+        pdeq->head = NULL;
+    else
+        pdeq->tail->next = NULL;
+        
+    return rdata;
+}
+
+Data DQGetFirst(Deque *pdeq)
+{
+    if(DQIsEmpty(pdeq))
+    {
+        printf("Deque Memory Error!");
+        exit(-1);
+    }
+    
+    return pdeq->head->data;
+}
+
+Data DQGetLast(Deque *pdeq)
+{
+    if(DQIsEmpty(pdeq))
+    {
+        printf("Deque Memory Error!");
+        exit(-1);
+    }
+    
+    return pdeq->tail->data;
+}
+```
+
+# 08-1. 트리의 개요
+
+### 트리란?
+
+- 계층적 관계를 **표현**하는 자료구조
+
+![](https://user-images.githubusercontent.com/79959379/207223669-9b687c5d-4936-40fc-8ace-31a889d6a787.png)
+
+노드 : 트리의 구성요소
+간선 : 노드와 노드를 연결하는 연결선
+루트 노드 : 최상위에 존재하는 노드
+단말 노드(리프 노드) : 아래로 또 다른 노드가 연결되어 있지 않은 노드
+내부 노드 : 단말 노드를 제외한 모든 노드
+레벨 : 각 층별로 숫자를 매긴 것
+높이 : 트리의 최고 레벨
+관계 : 부모, 자식, 형제
+
+### 트리의 종류
+
+- 의사 결정 트리(decision tree)
+    - 다양한 데이터 분석 기법의 유용한 도구가 된다.
+ 
+- 이진 트리
+    
+    <aside>
+    💡 <이진 트리의 조건>
+    1. 루트 노드를 중심으로 두 개의 서브 트리로 나뉘어진다.
+    2. 나뉘어진 두 서브 트리도 모두 이진 트리여야 한다.(재귀적)
+    
+    이때, 노드가 위치할 수 있는 곳에 노드가 존재하지 않는다면, 공집합 노드가 존재하는 것으로 간주하며, 공집합 노드도 이진 트리의 판단에 있어서 노드로 인정한다.
+    
+    </aside>
+    
+    - 포화 이진 트리
+        - 모든 레벨이 꽉 찬 이진트리
+
+    - 완전 이진트리
+        - 포화 이진 트리처럼 모든 레벨이 꽉 찬 상태는 아니지만,
+            
+            노드가 위에서 아래로, 왼쪽에서 오른쪽의 순서대로 빈틈없이 채워진 트리
